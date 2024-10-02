@@ -242,6 +242,26 @@
   </div>
 </section> -->
 
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <!-- Animation. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <!-- intor Figure-->
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-full">
+            <img src="./static/images/intro.jpg"
+                  class="method-image is-shadow"
+                  style="width: 75%; height: auto;"
+                  alt="Interpolate start reference image."/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+  
 
 <section class="section">
   <div class="container is-max-desktop">
@@ -274,7 +294,8 @@
       </div>
     </div>
     <!--/ Abstract. -->
-
+  </div>
+</section>
 
     
 
@@ -291,18 +312,21 @@
           <div class="column is-full">
             <img src="./static/images/Model_full.jpg"
                   class="method-image is-shadow"
+                  style="width: 150%; max-width: none; margin-left: -25%;"
                   alt="Interpolate start reference image."/>
           </div>
         </div>
         <!--/ Method Figure-->
 
         <!-- Interpolating. -->
-        <div class="content has-text-justified">
-          <p>
-            ▲ The overall pipeline of the proposed method. PROB based on Deformable DETR is adopted for an open-word object detector. The Unknown Box Refine Module enhances the regression of unknown proposals using the segmentation masks from SAM. The Embedding Transfer Module distills
-            instance-wise relationships obtained from DINOv2’s rich feature space. For each known and refined unknown proposal, DINOv2 features are distilled into
-            the detector’s instance embeddings, based on the similarity between the DINOv2 features as a weight for the contrastive loss.
-          </p>
+        <div class="column" style="width: 150%; max-width: none; margin-left: -25%; margin-top: 20px;">
+          <div class="content has-text-justified">
+            <p>
+              ▲ The overall pipeline of the proposed method. PROB based on Deformable DETR is adopted for an open-word object detector. The Unknown Box Refine Module enhances the regression of unknown proposals using the segmentation masks from SAM. The Embedding Transfer Module distills
+              instance-wise relationships obtained from DINOv2’s rich feature space. For each known and refined unknown proposal, DINOv2 features are distilled into
+              the detector’s instance embeddings, based on the similarity between the DINOv2 features as a weight for the contrastive loss.
+            </p>
+          </div>
         </div>
         <!-- <br/> -->
         <!--/ Interpolating. -->
@@ -313,6 +337,100 @@
 </section>
 
 
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <!-- Animation. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Results</h2>
+        
+        <h3 class="title is-5">Qualitative results of inter-proposal relationships on M-OWODB and U-OWODB</h3>
+        
+        <div class="is-centered">
+
+          <!-- Image Section (wider than text) -->
+          <div class="column" style="position: relative; overflow: visible;">
+            <img src="./static/images/sim_results.jpg"
+                  class="method-image is-shadow"
+                  style="width: 150%; max-width: none; margin-left: -25%; margin-top: -15px; margin-bottom: -15px;"
+                  alt="Interpolate start reference image."/>
+          </div>
+
+          <!-- Text Section (fixed width) -->
+          <!-- <div class="column is-four-fifths" style="margin: 0 auto;"> -->
+          <div class="column" style="width: 150%; max-width: none; margin-left: -25%; margin-bottom: 30px;">
+            <div class="content has-text-justified">
+              <p>
+                ▲ Proposals with high feature similarity to the query proposal are
+                colored red, while highly dissimilar proposals are colored blue. Ours successfully captures similarities between both the known and unknown objects. For
+                example, while giraffe and horse are similar to giraffe query, the fire hydrant is highly dissimilar. In contrast, PROB fails to distinguish features across
+                proposals, treating all as highly similar. Although RNCDL uses self-supervision to learn features, it fails to learn semantically meaningful representations.
+            </div>
+          </div>
+          
+        </div>
+
+        <h3 class="title is-5">Qualitative results of unknown object detection M-OWODB</h3>
+        <div class="is-centered">
+
+          <!-- Image Section (wider than text) -->
+          <div class="column" style="position: relative; overflow: visible;">
+            <img src="./static/images/det_results.jpg"
+                  class="method-image is-shadow"
+                  style="width: 80%; max-width: none; margin-left: 0%; margin-top: -15px; margin-bottom: -15px;"
+                  alt="Interpolate start reference image."/>
+          </div>
+
+          <!-- Text Section (fixed width) -->
+          <!-- <div class="column is-four-fifths" style="margin: 0 auto;"> -->
+          <div class="column" style="width: 80%; max-width: none; margin-left: 10%; margin-bottom: 30px;">
+            <div class="content has-text-justified">
+              <p>
+                ▲ Our model achieves a more accurate detection of unknown objects using the
+                semantic masks generated by SAM to guide the regression of these objects.
+              </p>
+            </div>
+          </div>
+          
+        </div>
+
+        <h3 class="title is-5">Qualitative results in an open-world tracking scenario</h3>
+        <div class="is-centered">
+
+          <!-- Image Section (wider than text) -->
+          <div class="column" style="position: relative; overflow: visible;">
+            <img src="./static/images/tracking_results.jpg"
+                  class="method-image is-shadow"
+                  style="width: 80%; max-width: none; margin-left: 0%; margin-top: -15px; margin-bottom: -15px;"
+                  alt="Interpolate start reference image."/>
+          </div>
+
+          <!-- Text Section (fixed width) -->
+          <!-- <div class="column is-four-fifths" style="margin: 0 auto;"> -->
+          <div class="column" style="width: 80%; max-width: none; margin-left: 10%; margin-bottom: 30px;">
+            <div class="content has-text-justified">
+              <p>
+                ▲ Bounding box colors represent track IDs, with both the squirrel and ball belonging
+                to unknown classes. While PROB successfully detects the squirrel, they
+                fail to associate them across frames since the embeddings of squirrel’s
+                varying shapes are not similar enough. Our method successfully tracks the
+                squirrel by learning semantically rich instance embeddings, which are used
+                to compute feature similarity between inter-frame proposals.
+              </p>
+            </div>
+          </div>
+          
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
     <!-- Paper video. -->
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
