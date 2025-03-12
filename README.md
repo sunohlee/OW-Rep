@@ -1,14 +1,14 @@
-# Nerfies
+# OW-Rep
 
-This is the repository that contains source code for the [Nerfies website](https://nerfies.github.io).
+This is the repository that contains source code for the [OW-Rep website](https://sunohlee.github.io/OWODRep).
 
-If you find Nerfies useful for your work please cite:
+If you find OW-Rep useful for your work please cite:
 ```
-@article{park2021nerfies
-  author    = {Park, Keunhong and Sinha, Utkarsh and Barron, Jonathan T. and Bouaziz, Sofien and Goldman, Dan B and Seitz, Steven M. and Martin-Brualla, Ricardo},
-  title     = {Nerfies: Deformable Neural Radiance Fields},
-  journal   = {ICCV},
-  year      = {2021},
+@article{lee2024open,
+  title={Open-World Object Detection with Instance Representation Learning},
+  author={Lee, Sunoh and Jeon, Minsik and Min, Jihong and Seo, Junwon},
+  journal={arXiv preprint arXiv:2409.16073},
+  year={2024}
 }
 ```
 
