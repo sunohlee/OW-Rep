@@ -6,7 +6,7 @@
         content="OW-Rep: Open-World Object Detection with Instance Representation Learning for objects' Inter-Relationship">
   <meta name="keywords" content="OWOD, Representation, Instance">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Open-World Object Detection with Instance Representation Learning</title>
+  <title>OW-Rep: Open-World Object Detection with Instance Representation Learning</title>
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
@@ -251,7 +251,7 @@
         <!-- intor Figure-->
         <div class="columns is-centered has-text-centered">
           <div class="column is-full">
-            <img src="./static/images/intro.jpg"
+            <img src="./static/images/OW-Rep_concept_img.jpg"
                   class="method-image is-shadow"
                   style="width: 75%; height: auto;"
                   alt="Interpolate start reference image."/>
@@ -271,24 +271,26 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            While humans naturally identify novel objects and understand their relationships, 
-            deep learning-based object detectors struggle to detect and relate objects that are not observed during training.
+            Open World Object Detection (OWOD) addresses realistic scenarios where unseen object classes emerge, 
+            enabling detectors trained on known classes to detect unknown objects and incrementally incorporate the knowledge they provide.
           </p>
           <p>
-            To overcome this issue, Open World Object Detection (OWOD) has been introduced to enable models to detect unknown objects in open-world scenarios. 
-            However, OWOD methods fail to capture the fine-grained relationships between detected objects, 
-            which are crucial for comprehensive scene understanding and applications such as class discovery and tracking.
+            While existing OWOD methods primarily focus on detecting unknown objects, 
+            they often overlook the rich semantic relationships between detected objects, 
+            which are essential for scene understanding and applications in open-world environments (e.g., open-world tracking and novel class discovery).
           </p>
           <p>
-            In this paper, we propose a method to train an object detector that can both detect novel objects and extract semantically rich features in open-world conditions 
-            by leveraging the knowledge of Vision Foundation Models (VFM). 
-            We first utilize the semantic masks from the Segment Anything Model to supervise the box regression of unknown objects, 
-            ensuring accurate localization. By transferring the instance-wise similarities obtained from the VFM features to the detector’s instance embeddings, 
-            our method then learns a semantically rich feature space of these embeddings.
+            In this paper, we extend the OWOD framework to jointly detect unknown objects and learn semantically rich instance embeddings, 
+            enabling the detector to capture fine-grained semantic relationships between instances. To this end, we propose two modules 
+            that leverage the rich and generalizable knowledge of Vision Foundation Models (VFM). 
+            First, the Unknown Box Refine Module uses semantic masks from the Segment Anything Model to accurately localize unknown objects.
+            The Embedding Transfer Module then distills instance-wise semantic similarities from VFM features to the detector's embeddings via a relaxed contrastive loss, 
+            
+            enabling the detector to learn a semantically meaningful and generalizable instance feature. 
           </p>
           <p>
-            Extensive experiments show that our method learns a robust and generalizable feature space, outperforming other OWOD-based feature extraction methods. Additionally, 
-            we demonstrate that the enhanced feature from our model increases the detector’s applicability to tasks such as open-world tracking.
+            Extensive experiments show that our method significantly improves both unknown object detection and instance embedding quality, 
+            while also enhancing performance in downstream tasks such as open-world tracking.
           </p>
         </div>
       </div>
@@ -321,10 +323,18 @@
         <!-- Interpolating. -->
         <div class="column" style="width: 150%; max-width: none; margin-left: -25%; margin-top: 20px;">
           <div class="content has-text-justified">
+            <!-- <p>
+              ▲ Overall Architecture of the Proposed Method.
+            </p> -->
             <p>
-              ▲ The overall pipeline of the proposed method. PROB based on Deformable DETR is adopted for an open-word object detector. The Unknown Box Refine Module enhances the regression of unknown proposals using the segmentation masks from SAM. The Embedding Transfer Module distills
-              instance-wise relationships obtained from DINOv2’s rich feature space. For each known and refined unknown proposal, DINOv2 features are distilled into
-              the detector’s instance embeddings, based on the similarity between the DINOv2 features as a weight for the contrastive loss.
+              ▲ Our method extends OWOD by not only detecting unknown objects but also
+              extracting semantically rich features. We adopt PROB as the baseline open-word object detector. 
+              During training, the known and unknown proposals from PROB, with corresponding instance embeddings, 
+              are fed into the proposed modules. The Unknown Box Refine Module improves the localization of unknown objects by treating 
+              refined unknown boxes from SAM as pseudo ground truth. The Embedding Transfer Module extracts source embeddings by average pooling DINOv2 features within the refined unknown and known proposals. 
+              Pairwise similarities between source embeddings are then computed and used as weights for the relaxed contrastive loss,
+              controlling the attraction and repulsion between instance embeddings. At inference, the detector generates semantically rich instance
+              embeddings, capturing fine-grained relationships between detected proposals.
             </p>
           </div>
         </div>
@@ -345,7 +355,7 @@
       <div class="column is-four-fifths">
         <h2 class="title is-3">Results</h2>
         
-        <h3 class="title is-5">Qualitative results of inter-proposal relationships on M-OWODB and U-OWODB</h3>
+        <h3 class="title is-5">Qualitative results of inter-proposal relationships on OWOD and Unknown-Unknown split</h3>
         
         <div class="is-centered">
 
@@ -362,16 +372,44 @@
           <div class="column" style="width: 150%; max-width: none; margin-left: -25%; margin-bottom: 30px;">
             <div class="content has-text-justified">
               <p>
-                ▲ Proposals with high feature similarity to the query proposal are
-                colored red, while highly dissimilar proposals are colored blue. Ours successfully captures similarities between both the known and unknown objects. For
-                example, while giraffe and horse are similar to giraffe query, the fire hydrant is highly dissimilar. In contrast, PROB fails to distinguish features across
-                proposals, treating all as highly similar. Although RNCDL uses self-supervision to learn features, it fails to learn semantically meaningful representations.
+                ▲ Proposals with high feature
+                similarity to the reference are shown red, while dissimilar proposals are in blue. Ours successfully captures semantic similarities between
+                both the known and unknown objects. For example, the reference giraffe is similar to both an unknown giraffe and a known horse, while
+                the fire hydrant is highly dissimilar. In contrast, PROB treats all proposals as highly similar. RNCDL, despite using self-supervision to
+                learn features, fails to capture meaningful semantics, mistakenly considering the giraffe and fire hydrant highly similar.
+            </div>
+          </div>
+          
+        </div>
+        
+        <h3 class="title is-5">t-SNE visualization of the learned instance embeddings</h3>
+        <div class="is-centered">
+
+          <!-- Image Section (wider than text) -->
+          <div class="column" style="position: relative; overflow: visible;">
+            <img src="./static/images/tsne_results.jpg"
+                  class="method-image is-shadow"
+                  style="width: 150%; max-width: none; margin-left: -25%; margin-top: -15px; margin-bottom: -15px;"
+                  alt="Interpolate start reference image."/>
+          </div>
+
+          <!-- Text Section (fixed width) -->
+          <!-- <div class="column is-four-fifths" style="margin: 0 auto;"> -->
+            <div class="column" style="width: 150%; max-width: none; margin-left: -25%; margin-bottom: 30px;">
+            <div class="content has-text-justified">
+              <p>
+                ▲ Unlike PROB, where embeddings are mixed and lack clear separation, 
+                our method produces a well-structured feature space with distinct class-wise clusters. 
+                Additionally, semantically similar animal classes appear closer together, 
+                while unrelated categories remain separate. This shows that our method effectively
+                captures semantic relationships within the feature space.
+              </p>
             </div>
           </div>
           
         </div>
 
-        <h3 class="title is-5">Qualitative results of unknown object detection M-OWODB</h3>
+        <h3 class="title is-5">Qualitative results of unknown object detection</h3>
         <div class="is-centered">
 
           <!-- Image Section (wider than text) -->
@@ -387,8 +425,8 @@
           <div class="column" style="width: 80%; max-width: none; margin-left: 10%; margin-bottom: 30px;">
             <div class="content has-text-justified">
               <p>
-                ▲ Our model achieves a more accurate detection of unknown objects using the
-                semantic masks generated by SAM to guide the regression of these objects.
+                ▲ Unknown object detections from PROB (top row) and our model (bottom row) are compared. By leveraging semantic masks from
+                SAM, our model achieves accurate localization.
               </p>
             </div>
           </div>
