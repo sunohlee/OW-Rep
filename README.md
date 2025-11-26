@@ -1,6 +1,6 @@
 # OW-Rep
 
-This is the repository that contains source code for the [OW-Rep website](https://sunohlee.github.io/OWODRep).
+This is the repository that contains source code for the [OW-Rep website](https://sunohlee.github.io/OW-Rep).
 
 If you find OW-Rep useful for your work please cite:
 ```
