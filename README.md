@@ -21,7 +21,7 @@ If you have any question, please contact me via email at [sunoh0131@gmail.com](m
 
 ## 🔥 NEWS
 
-**`2025/08/01`**: 🚀 OW-Rep was accepted to **WACV 2026**
+**`2025/11/11`**: 🚀 OW-Rep was accepted to **WACV 2026**
 
 
 ## Table of Contents
