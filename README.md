@@ -1,7 +1,6 @@
 # OW-Rep
 
-The code will be uploaded soon.
-If you have any question, please contact me via email at [sunoh0131@gmail.com](mailto:sunoh0131@gmail.com).
+If you have any question (code sharing, weight, data split etc), please feel free to contact me via email at [sunoh0131@gmail.com](mailto:sunoh0131@gmail.com).
 
 
 <p align="center">
@@ -26,7 +25,7 @@ If you have any question, please contact me via email at [sunoh0131@gmail.com](m
 
 ## Table of Contents
 - [Results](#Results)
-- [Installation](#installation)
+- [Preparation](#Preparation)
 - [Train](#Train)
 - [Inference](#Inference)
 - [Citation](#citation)
@@ -50,29 +49,93 @@ Here are some example outputs:
 
 
 
-## Installation
+## Preparation
 
-### Step 0 - Docker Image Pull
+### Step 1 - Environment Setup
+**Option A: Using Docker (Recommended)**
+You can easily set up the environment by pulling the pre-built Docker image:
+```
+docker pull sunoh0131/ow-rep:latest
 ```
 
+Note: Alternatively, you can manually install the environment by following the "Requirements and Installation" guide in the <a href="https://github.com/orrzohar/PROB?tab=readme-ov-file">PROB GitHub repository</a>.
+
+### Step 2 - Dataset
+You can download [coco dataset](https://cocodataset.org/#download) and [pascal dataset](http://host.robots.ox.ac.uk/pascal/VOC/) into the `data/` directory.
+
+You can refer to "Dataset Preparation" part in the <a href="https://github.com/orrzohar/PROB?tab=readme-ov-file">PROB GitHub repository</a>.
+
+Previous and our dataset splits are in the `data/OWOD/ImageSets` directory.
+
+Dataset folder structure:
 ```
+workspace/
+└── data/
+    └── OWOD/
+        ├── JPEGImages
+        ├── Annotations
+        └── ImageSets
+            ├── OWDETR
+            ├── TOWOD
+            └── VOC2007
+```
+
+### Step 3 - Dinov2, SAM Feature (only for training)
+<!-- - Run the following scripts to generate the features:
+```
+python dino_feat_gen.py
+python sam_feat_gen.py
+```
+
+- If transformer version miss match appears, you might upgrade the transformer version :
+ ```
+ install --no-cache-dir transformers==4.37.0
+``` -->
+
+
+
+### Step 4 - Pretrained Weight
+#### Backbone model weight
+You can download the self-supervised backbone model from [here](https://dl.fbaipublicfiles.com/dino/dino_resnet50_pretrain/dino_resnet50_pretrain.pth) and place the .pth file inside the `models/` directory.
+
+#### Our model weights
+
+<!-- Note: The pre-trained weights are hosted on Google Drive. Please request access via the links below, and I will approve it.
+(If you want other model weights with other splits or models, please ask me.)
+
+| Model Type        | Download Link |
+|---|---|
+| PROB base	        | <a href="https://drive.google.com/drive/folders/1cadaraR0sajsWl4m8qz92WF3Un0mBbjF?usp=drive_link">Google drive link</a> |
+| Ours (PROB + SAM)	| <a href="https://drive.google.com/drive/folders/1_RA2ZgcplV4ifLT6Ln8ZxR3wAfWARfqq?usp=drive_link">Google drive link</a> |
+| Ours (PROB + ET)	| <a href="https://drive.google.com/drive/folders/1tWQF6XDojrvV0rIoUQB1_uM4PLGUwNl5?usp=drive_link">Google drive link</a> |
+| Ours (PROB + Both)| <a href="https://drive.google.com/drive/folders/1pLn33wcMK85-HuzuiOSwKV8K2Aagie45?usp=drive_link">Google drive link</a> | -->
 
 
 ## Train
+<!-- All details are in run_daidc_prob.sh -->
+- Tested in A100 80GB
+<!-- - **Note**: If you encounter Out-Of-Memory (OOM) errors during training, uncomment line 116 in engine.py and adjust the frequency of empty_cache(). -->
 
-A detailed script will be published!
+### Example
 
-```
-
-```
+<!-- ```
+CUDA_GPUS_PER_NODE=4 ./tools/run_dist_launch.sh 4 configs/incremental/M_OWOD_BENCHMARK_2025_ETLR_SAMREF.sh
+``` -->
 
 ## Inference
 
-A detailed script will be published!
+<!-- - All details are in run_daidc_prob.sh -->
+- For inference, SAM and DINO features or their models are not required.
 
-```
+<!-- - The original test set contains duplicate file names, which causes some images to be evaluated multiple times. To solve this, please use ./data/OWOD/ImageSets/TOWOD/owod_all_task_test.txt and run the evaluation code with 2 or fewer GPUs. (This is simply a reordered version of the original owod_all_task_test.txt. If you evaluate with a single GPU, you can use either text file.)
 
+- For instance, in M_PROB_ET_SAM_eval.sh, change `FOLDER_NAME` to the directory where the pretrained weights are located. Also, make sure the weights are placed in the correct hierarchy to match the `--resume` path. -->
+
+### Example
+<!-- 
 ```
+CUDA_GPUS_PER_NODE=2 ./tools/run_dist_launch.sh 2 configs/incremental/M_PROB_ET_SAM_eval.sh
+``` -->
 
 
 ## Citation
@@ -87,3 +150,10 @@ If you find this code useful for your research, please consider citing us:
   year={2024}
 }
 ```
+
+## Contact
+If you have any question, please contact me via email at [sunoh0131@gmail.com](mailto:sunoh0131@gmail.com).
+
+
+## Acknowledgements
+OW-Rep builds on previous works' code bases such as [PROB](https://github.com/orrzohar/PROB?tab=readme-ov-file), [Deformable DETR](https://github.com/fundamentalvision/Deformable-DETR), [Detreg](https://github.com/amirbar/DETReg), [LabelRelaxation](https://github.com/sung-yeon-kim/LabelRelaxation-CVPR21) and [OWOD](https://github.com/JosephKJ/OWOD). If you found OW-Rep useful please consider citing these works as well.
