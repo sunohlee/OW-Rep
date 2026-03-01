@@ -142,12 +142,12 @@ CUDA_GPUS_PER_NODE=2 ./tools/run_dist_launch.sh 2 configs/incremental/M_PROB_ET_
 If you find this code useful for your research, please consider citing us:
 
 ```
-@article{lee2024open,
-  title={Open-World Object Detection with Instance Representation Learning},
+@inproceedings{lee2026ow,
+  title={OW-Rep: Open World Object Detection with Instance Representation Learning},
   author={Lee, Sunoh and Jeon, Minsik and Min, Jihong and Seo, Junwon},
-  journal={arXiv e-prints},
-  pages={arXiv--2409},
-  year={2024}
+  booktitle={Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)},
+  pages={339--349},
+  year={2026}
 }
 ```
 
